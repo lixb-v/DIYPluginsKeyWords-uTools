@@ -3,13 +3,14 @@ import { Layout, Menu } from 'antd';
 import './index.scss'
 import MenuList from './components/MenuList'
 import ConfigureContent from './components/ConfigureContent'
+import { tabHeight } from '@/const'
 const { Content, Sider } = Layout;
 const getHeight = () => {
-  return 'calc(100vh - 46px)'
+  return `calc(100vh - ${tabHeight}px)`
 }
-function KeyWordSetting() {
+function KeyWordSetting(props) {
   return (
-   <Layout>
+   <Layout style={{ background: '#f3f4f6'  }}>
     <Sider
       style={{
         marginTop: '8px',
@@ -17,13 +18,14 @@ function KeyWordSetting() {
         height: getHeight(),
         position: 'fixed',
         left: 0,
-        background: '#fff'
+        background: '#fff',
+        borderRadius: '6px'
       }}
     >
       <MenuList />
     </Sider>
-    <Layout className="site-layout" style={{ marginLeft: 200, background: '#f3f4f6' }}>
-      <Content style={{ margin: '8px 8px 0', overflow: 'auto', height: getHeight()}}>
+    <Layout className="site-layout" style={{ marginLeft: 200 }}>
+      <Content style={{ margin: '8px', overflow: 'auto', height: getHeight(), background: '#fff', borderRadius: '6px'}}>
         <div className="site-layout-background" style={{ padding: 8 }}>
           <ConfigureContent />
         </div>

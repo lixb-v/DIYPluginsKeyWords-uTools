@@ -1,0 +1,1 @@
+export const tabHeight = 46
