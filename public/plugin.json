@@ -1,0 +1,15 @@
+{
+	"main": "index.html",
+	"logo": "logo.png",
+	"preload":"preload.js",
+	"features": [
+		{
+		  "code": "configure",
+		  "explain": "diy插件关键字",
+			"cmds":["diy", "plugins", "diyPlugins"]
+		}
+	],
+  "development": {
+    "main": "http://localhost:3000/"
+  }
+}
