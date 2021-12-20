@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Layout, Menu } from 'antd';
+import { Layout, Empty  } from 'antd';
 import './index.scss'
 import MenuList from './components/MenuList'
 import ConfigureContent from './components/ConfigureContent'
@@ -9,25 +9,28 @@ const getHeight = () => {
   return `calc(100vh - ${tabHeight}px)`
 }
 function KeyWordSetting(props) {
+  const [ currentEditPlugins, setCurrentEditPlugins ] = useState({})
   return (
    <Layout style={{ background: '#f3f4f6'  }}>
     <Sider
       style={{
-        marginTop: '8px',
         overflow: 'auto',
         height: getHeight(),
         position: 'fixed',
         left: 0,
-        background: '#fff',
+        background: '#f3f4f6',
         borderRadius: '6px'
       }}
     >
-      <MenuList />
+      <MenuList setCurrentEditPlugins={ setCurrentEditPlugins }/>
     </Sider>
-    <Layout className="site-layout" style={{ marginLeft: 200 }}>
-      <Content style={{ margin: '8px', overflow: 'auto', height: getHeight(), background: '#fff', borderRadius: '6px'}}>
+    <Layout className="site-layout" style={{ marginLeft: 200, position: 'absolute', width: 'calc(100vw - 200px)' }}>
+      <Content style={{ overflow: 'auto', height: getHeight(), background: '#fff', borderRadius: '6px'}}>
         <div className="site-layout-background" style={{ padding: 8 }}>
-          <ConfigureContent />
+          { currentEditPlugins.pluginName
+            ? <ConfigureContent currentEditPlugins={ currentEditPlugins }/>
+            : <Empty description="请选择一个插件进行配置" />
+          }
         </div>
       </Content>
     </Layout>

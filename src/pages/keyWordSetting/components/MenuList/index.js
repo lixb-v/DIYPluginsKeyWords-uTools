@@ -1,11 +1,28 @@
-import { useState } from 'react';
-import { Menu } from 'antd'
+import { useState, useContext, useEffect } from 'react';
+import { RootContext } from '@/reducer/rootContext'
+
+import { Menu, Tag } from 'antd'
 import {
   StarOutlined,
   SettingOutlined
 } from '@ant-design/icons';
+
+const setPluginsIcon = (plugins) => {
+  return (
+    <img style={{ width: 30, height: 30, borderRadius: '50%' }} src={plugins.logoPath} alt={ plugins.pluginName }/>
+  )
+}
+
+const MenuTtemStyle = () => {
+  return { paddingLeft: 30 }
+}
 const { SubMenu } = Menu;
-function SideBar() {
+function MenuList(props) {
+  const [ notSettingList, setNotSettingList ] = useState([])
+  const {state, dispatch} = useContext(RootContext) // 获取全局的数据
+  useEffect(() => {
+    setNotSettingList(state.pluginsReduce.pluginsList)
+  }, [state.pluginsReduce.pluginsList])
   // 分类列表
   const [ menuList, setMenuList ] = useState([{
     title: '已配置插件',
@@ -18,27 +35,33 @@ function SideBar() {
   }])
 
   // 已配置插件
-  const [alreadySetting, setAlreadySetting] = useState([{
+  const [alreadySettingList, setAlreadySettingList] = useState([{
     pluginName: '资源搜索',
     key: '资源搜索',
     logo: ''
   }])
 
-  // 未配置插件
-  const [ notSetting, setNotSetting ] = useState([{
-    pluginName: '斗图',
-    key: '斗图',
-    logo: ''
-  }])
+  const editorClick = (pluginInfo) => {
+    props.setCurrentEditPlugins(pluginInfo)
+  }
+
+  const subMenuTitleRender = (menuItem) => {
+    return (
+      <div>
+        {menuItem.title}
+        <span style={{ marginLeft: 5 }}>({ menuItem.key === 'alreadySetting' && alreadySettingList.length }{ menuItem.key === 'notSetting' && notSettingList.length })</span>
+      </div>
+    )
+  }
   return (
-    <Menu  mode="inline">
+    <Menu  mode="inline" defaultOpenKeys={['alreadySetting']}>
     { menuList.map(menuItem => (
-      <SubMenu key={ menuItem.key } icon={ menuItem.icon } title={ menuItem.title }>
-        { menuItem.key === 'alreadySetting' && alreadySetting.map(pluginItem => (
-          <Menu.Item key={ pluginItem.pluginName }>{ pluginItem.pluginName }</Menu.Item>
+      <SubMenu key={ menuItem.key } icon={ menuItem.icon } title={ subMenuTitleRender(menuItem) }>
+        { menuItem.key === 'alreadySetting' && alreadySettingList.map(pluginItem => (
+          <Menu.Item style={ MenuTtemStyle() } key={ pluginItem.pluginName }>{ pluginItem.pluginName }</Menu.Item>
         ))}
-        { menuItem.key === 'notSetting' && notSetting.map(pluginItem => (
-          <Menu.Item key={ pluginItem.pluginName }>{ pluginItem.pluginName }</Menu.Item>
+        { menuItem.key === 'notSetting' && notSettingList.map(pluginItem => (
+          <Menu.Item style={ MenuTtemStyle() } icon={ setPluginsIcon(pluginItem) } key={ pluginItem.pluginName } onClick={ () => { editorClick(pluginItem) } }>{ pluginItem.pluginName }</Menu.Item>
         ))}
       </SubMenu>
     )) }
@@ -46,4 +69,4 @@ function SideBar() {
   );
 }
 
-export default SideBar;
+export default MenuList;
