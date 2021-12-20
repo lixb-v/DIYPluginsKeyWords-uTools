@@ -22,3 +22,48 @@
     }
   }
 }
+.card_content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .ant-card-head {
+    height: 80px;
+  }
+  .ant-card-body {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .list_title_warp {
+    width: 100%;
+    display: flex;
+    height: 40px;
+    .line {
+      width: 2px;
+      height: 100%;
+      background-color: #fff;
+    }
+    .diy_keyWord_title, 
+    .target_keyWord_title {
+      color: #000;
+      font-size: 14px;
+      font-weight: 700;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba($color: #e7eaed, $alpha: 0.7);
+    }
+  }
+  .setting_list {
+    position: relative;
+    flex: 1;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {display:none}
+    .memory_btn_Warp {
+  
+    }
+  }
+}

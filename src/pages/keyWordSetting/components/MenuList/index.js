@@ -20,6 +20,7 @@ const { SubMenu } = Menu;
 function MenuList(props) {
   const [ notSettingList, setNotSettingList ] = useState([])
   const {state, dispatch} = useContext(RootContext) // 获取全局的数据
+  console.log(state, 'state')
   useEffect(() => {
     setNotSettingList(state.pluginsReduce.pluginsList)
   }, [state.pluginsReduce.pluginsList])

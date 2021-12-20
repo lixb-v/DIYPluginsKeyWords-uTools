@@ -37,6 +37,7 @@ function App() {
         <Router>
             <Route exact path="/">
               <Redirect to="/home/keyWordSetting" />
+              {/* <Redirect to="/demo" /> */}
             </Route>
             <Route path="/Home" component={ Home }></Route>
             <Route path="/demo" component={ Demo }></Route>

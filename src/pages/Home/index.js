@@ -8,18 +8,18 @@ const { TabPane } = Tabs;
 function Home() {
   const [ tabList, setTabList ] = useState([{
     tab: '关键字设置',
-    key: 'keyWordSetting',
-    route: () => (<Route path="/home/keyWordSetting" component={ keyWordSetting } />)
+    key: 'keyWordSetting'
   }])
     return (
-      <Card style={{ width: '100%', margin: 'auto', height: '100vh', overflow: 'hidden' }}>
-        <Tabs defaultActiveKey="keyWordSetting" style={{ height: tabHeight }}>
+      <Card style={{ width: '100%', margin: 'auto', height: '100vh', overflow: 'hidden' }} tabList={tabList} activeTabKey="keyWordSetting">
+        {/* <Tabs defaultActiveKey="keyWordSetting" style={{ height: tabHeight }}>
           { tabList.map(tabItem => (
              <TabPane tab={ tabItem.tab } key={ tabItem.key }>
                { tabItem.route() }
              </TabPane>
           )) } 
-        </Tabs>
+        </Tabs> */}
+        <Route path="/home/keyWordSetting" component={ keyWordSetting } />
       </Card>
     )
   }

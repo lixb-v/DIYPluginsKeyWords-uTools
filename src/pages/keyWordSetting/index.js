@@ -25,8 +25,8 @@ function KeyWordSetting(props) {
       <MenuList setCurrentEditPlugins={ setCurrentEditPlugins }/>
     </Sider>
     <Layout className="site-layout" style={{ marginLeft: 200, position: 'absolute', width: 'calc(100vw - 200px)' }}>
-      <Content style={{ overflow: 'auto', height: getHeight(), background: '#fff', borderRadius: '6px'}}>
-        <div className="site-layout-background" style={{ padding: 8 }}>
+      <Content style={{  background: '#fff', borderRadius: '6px'}}>
+        <div className="site-layout-background" style={{ overflow: 'hidden', height: getHeight(), padding: 8 }}>
           { currentEditPlugins.pluginName
             ? <ConfigureContent currentEditPlugins={ currentEditPlugins }/>
             : <Empty description="请选择一个插件进行配置" />
