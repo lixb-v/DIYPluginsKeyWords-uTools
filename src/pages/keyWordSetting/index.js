@@ -22,7 +22,7 @@ function KeyWordSetting(props) {
         borderRadius: '6px'
       }}
     >
-      <MenuList setCurrentEditPlugins={ setCurrentEditPlugins }/>
+      <MenuList setCurrentEditPlugins={ (plugins) => { setCurrentEditPlugins(plugins) } }/>
     </Sider>
     <Layout className="site-layout" style={{ marginLeft: 200, position: 'absolute', width: 'calc(100vw - 200px)' }}>
       <Content style={{  background: '#fff', borderRadius: '6px'}}>

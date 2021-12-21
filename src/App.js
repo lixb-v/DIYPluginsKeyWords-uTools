@@ -9,9 +9,9 @@ import {
 import Home from './pages/Home'
 import Demo from './pages/Demo'
 
-import { getPluginsPath } from '@/utils/index'
+import { getPluginsPath, isObject } from '@/utils/index'
 import { getPluginsDataList } from '@/utils/readFile'
-
+import { getPluginsId, getStoreDataById, getTargetKeyWOrdByPlugsData } from '@/utils/keyWordSetting'
 // 引入全局存储
 import {  rootInitState, rootReduce } from '@/reducer'
 import { RootContext } from '@/reducer/rootContext'
@@ -28,6 +28,23 @@ function App() {
   
     }else{// 进入脚本执行
       console.log('进入脚本执行:',code,type,payload, optional);
+      // 获取插件id
+      const pluginsId = getPluginsId(code)
+      // 获取当前插件diy关键字列表
+      const pluinsData = getStoreDataById(pluginsId)
+      const cmd = getTargetKeyWOrdByPlugsData(pluinsData, code.split('_')[1])
+      if(cmd) {
+        // 跳转插件
+        if(isObject(cmd)) {
+          utools.redirect(cmd.label, cmd.label)
+        } else {
+          utools.redirect(cmd)
+        }
+        console.log(cmd, '跳转成功')
+      } else { 
+        console.log(cmd, '跳转失败')
+        utools.outPlugin()
+      }
     }
   })
 
