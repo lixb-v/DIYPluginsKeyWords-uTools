@@ -1,9 +1,9 @@
-import { useState, useContext, useEffect } from 'react';
-import { RootContext } from '@/reducer/rootContext'
+import { useState } from 'react';
 import { Menu } from 'antd'
 import {
   StarOutlined,
-  SettingOutlined
+  SettingOutlined,
+  SearchOutlined
 } from '@ant-design/icons';
 
 const setPluginsIcon = (plugins) => {
@@ -17,27 +17,23 @@ const MenuTtemStyle = () => {
 }
 const { SubMenu } = Menu;
 function MenuList(props) {
-  const [ notSettingList, setNotSettingList ] = useState([])
-  // 已配置插件
-  const [alreadySettingList, setAlreadySettingList] = useState([])
-  
-  const {state, dispatch} = useContext(RootContext) // 获取全局的数据
+// 分类列表
+const [ menuList ] = useState([{
+  title: '已配置插件',
+  key: 'alreadySetting',
+  icon: <StarOutlined />
+}, {
+  title: '未配置插件',
+  key: 'notSetting',
+  icon: <SettingOutlined />
+}])
 
-  // 分类列表
-  const [ menuList ] = useState([{
-    title: '已配置插件',
-    key: 'alreadySetting',
-    icon: <StarOutlined />
-  }, {
-    title: '未配置插件',
-    key: 'notSetting',
-    icon: <SettingOutlined />
-  }])
-  useEffect(() => {
-    const { alreadyList, notSettingList } = state.pluginsReduce
-    setAlreadySettingList(alreadyList) 
-    setNotSettingList(notSettingList)
-  }, [state.pluginsReduce])
+const [searchBar, setSearchBar ] = useState({
+  title: '搜索结果',
+  key: 'searchBar',
+  icon: <SearchOutlined />
+})
+
 
   const editorClick = (pluginInfo) => {
     props.setCurrentEditPlugins(pluginInfo)
@@ -47,22 +43,36 @@ function MenuList(props) {
     return (
       <div>
         {menuItem.title}
-        <span style={{ marginLeft: 5 }}>({ menuItem.key === 'alreadySetting' && alreadySettingList.length }{ menuItem.key === 'notSetting' && notSettingList.length })</span>
+        <span style={{ marginLeft: 5 }}>
+          (
+            { menuItem.key === 'alreadySetting' && props.alreadySettingList.length }
+            { menuItem.key === 'notSetting' && props.notSettingList.length }
+            { menuItem.key === 'searchBar' && props.searchList.length }
+          )
+          </span>
       </div>
     )
   }
   return (
-    <Menu  mode="inline" defaultOpenKeys={['alreadySetting', 'notSetting']}>
-    { menuList.map(menuItem => (
-      <SubMenu key={ menuItem.key } icon={ menuItem.icon } title={ subMenuTitleRender(menuItem) }>
-        { menuItem.key === 'alreadySetting' && alreadySettingList.map(pluginItem => (
-          <Menu.Item style={ MenuTtemStyle() }  icon={ setPluginsIcon(pluginItem) }  onClick={ () => { editorClick(pluginItem) } } key={ 'alreadySetting' + pluginItem.name + pluginItem.pluginName }>{ pluginItem.pluginName }</Menu.Item>
-        ))}
-        { menuItem.key === 'notSetting' && notSettingList.map(pluginItem => (
-          <Menu.Item style={ MenuTtemStyle() } icon={ setPluginsIcon(pluginItem) } key={ 'notSetting' + pluginItem.name + pluginItem.pluginName } onClick={ () => { editorClick(pluginItem) } }>{ pluginItem.pluginName }</Menu.Item>
-        ))}
-      </SubMenu>
-    )) }
+    <Menu  mode="inline" defaultOpenKeys={['alreadySetting', 'notSetting', 'searchBar']}>
+      {
+        props.isSearch
+        ?
+        <SubMenu key={ searchBar.key}  icon={ searchBar.icon } title={ subMenuTitleRender(searchBar)} >
+          { props.searchList.map((pluginItem) => <Menu.Item style={ MenuTtemStyle() }  icon={ setPluginsIcon(pluginItem) }  onClick={ () => { editorClick(pluginItem) } } key={ 'searchBar' + pluginItem.name + pluginItem.pluginName }>{ pluginItem.pluginName }</Menu.Item> ) }
+        </SubMenu> 
+        :
+        menuList.map(menuItem => (
+          <SubMenu key={ menuItem.key } icon={ menuItem.icon } title={ subMenuTitleRender(menuItem) }>
+            { menuItem.key === 'alreadySetting' && props.alreadySettingList.map(pluginItem => (
+              <Menu.Item style={ MenuTtemStyle() }  icon={ setPluginsIcon(pluginItem) }  onClick={ () => { editorClick(pluginItem) } } key={ 'alreadySetting' + pluginItem.name + pluginItem.pluginName }>{ pluginItem.pluginName }</Menu.Item>
+            ))}
+            { menuItem.key === 'notSetting' && props.notSettingList.map(pluginItem => (
+              <Menu.Item style={ MenuTtemStyle() } icon={ setPluginsIcon(pluginItem) } key={ 'notSetting' + pluginItem.name + pluginItem.pluginName } onClick={ () => { editorClick(pluginItem) } }>{ pluginItem.pluginName }</Menu.Item>
+            ))}
+          </SubMenu>
+        ))
+      }
    </Menu>
   );
 }

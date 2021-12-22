@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { Table, Button, Card, Tag, Popconfirm, message, Tooltip, Switch } from 'antd'
 import { EditFilled, DeleteFilled } from '@ant-design/icons';
 import TheModal from './components/TheModal/index'
-import { convertDate, generateId } from '@/utils/index'
+import { convertDate, generateId, getContentHeight } from '@/utils/index'
 import { openLoaclKey } from '@/const'
 import { getAllFileList, saveFileInfo, addFeature, deleteFileInfo, deleteFeature, updataFileInfo } from '@/uTools/openLoacl'
 const cellListRender = (list, key, tipKey) => {
@@ -115,7 +115,6 @@ const Home = () => {
 
   const initFileList = () => {
     const list = getAllFileList(openLoaclKey)
-    console.log(list, 'list')
     setFileList(list)
   }
   // 编辑
@@ -143,7 +142,8 @@ const Home = () => {
       newVlaue.isEnabled = true
       saveFileInfo(newVlaue)
       addFeature(newVlaue)
-      initFileList()
+      initFileList() 
+      // setFileList([...fileList, newVlaue])
       resole(true)
     })
   }
@@ -155,9 +155,12 @@ const Home = () => {
         for(let valueKey in value) {
           findItem[valueKey] = value[valueKey]
         }
+        
         updataFileInfo(findItem)
+        deleteFeature(findItem._id)
+        addFeature(findItem) 
         initFileList()
-        resole(true)
+        resole(true) 
       } else {
         reject('编辑失败')
       }
@@ -199,9 +202,9 @@ const Home = () => {
       initFileList()
     }
   }
-  return (
-    <div className="page">
-      <Card style={{ width: 780, minHeight: 450, overflowY: 'scroll', margin: 'auto', marginTop: '10px' }} title="资源列表">
+  return ( 
+    <div className="page" style={{ height: getContentHeight(), paddingBottom: 32 }}>
+      <Card style={{ padding: 16,  margin: 'auto' }} title="资源列表">
         <div className="add_bon_warp">
           <Button type="primary" onClick={ add }>添加</Button>
         </div> 

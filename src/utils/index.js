@@ -1,4 +1,5 @@
 import { getPathUTools } from '@/uTools/api'
+import { diyStoreKey, splitSymbol, tabHeight } from '@/const'
 
 /**
  * @description 获取用户的uTools下的plugins插件路径
@@ -81,7 +82,7 @@ export function asynchronousOpenFile(fileList) {
  * @return { String }
 */
 export function generateId(key, KeyWord) {
-  return key + '_' + KeyWord
+  return key + splitSymbol + KeyWord
 }
 
 /**
@@ -90,4 +91,11 @@ export function generateId(key, KeyWord) {
 
 export function isHttp(path) {
   return path.substr(0, 4) === 'http'
+}
+
+/**
+ * // 获取去除tab栏后的高度
+*/
+export function getContentHeight() {
+  return `calc(100vh - ${tabHeight}px)`
 }

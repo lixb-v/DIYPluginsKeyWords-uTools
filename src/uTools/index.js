@@ -54,10 +54,10 @@ class UtoolsClass {
           utools.outPlugin();
           if(doc.isSync) {
             // 同步
-            syncOpenFile(doc.fileList || doc.data.items)
+            syncOpenFile(doc.fileList)
           } else {
             // 异步
-            asynchronousOpenFile(doc.fileList || doc.data.items)
+            asynchronousOpenFile(doc.fileList)
           }
         break
         default:

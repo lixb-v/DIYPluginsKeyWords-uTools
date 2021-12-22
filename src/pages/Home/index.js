@@ -7,7 +7,7 @@ import { Route } from 'react-router-dom'
 function Home(props) {
   const [tabKey, setTabKey] = useState('keyWordSetting')
   const [ tabList, setTabList ] = useState([{
-    tab: 'diy关键字',
+    tab: 'DIY关键字',
     key: 'keyWordSetting',
     path: '/home/keyWordSetting'
   }, {

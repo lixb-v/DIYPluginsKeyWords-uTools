@@ -65,7 +65,6 @@ function TheModal(props) {
 
   // 拖拽组件获取到文件
   const cordelleChnage = (file, index) => {
-    console.log(file, index, 'fi;eindex')
     const filePath = file.path
     const fileName = file.name
     const formValue = form.getFieldsValue()
@@ -116,8 +115,8 @@ function TheModal(props) {
         return (
           <>
             {fields.map((field, index) => (
-              <Card key={field.key} style={{ position: 'relative' }}>
-                { index !== 0 && <div style={{ position: 'absolute', right: 10, top: 10 }}>
+              <Card key={field.key} style={{ position: 'relative', marginBottom: 10 }}>
+                { fields.length > 1  && <div style={{ position: 'absolute', right: 10, top: 10 }}>
                   <MinusCircleOutlined onClick={() => remove(field.name)} />
                 </div>}
 

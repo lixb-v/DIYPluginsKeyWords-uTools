@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Card, Button } from 'antd'
-import { PlusOutlined } from '@ant-design/icons'
+import { Card, Button, Tooltip } from 'antd'
+import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons'
 import './index.scss'
 import SingleSetting from './SingleSetting'
 import { diyField, diyStoreKey, splitSymbol } from '@/const'
@@ -14,6 +14,24 @@ const renderTitle = (PluginsInfo) => {
         <div className="pluginName">{ PluginsInfo.pluginName }</div>
         <div className="author"><span className="info_title">开发者: </span>{PluginsInfo.author}</div>
       </div>
+    </div>
+  )
+}
+const tipBackgrounColor = 'rgba(255, 255, 255, .1)'
+
+const renderTip = (type) => {
+  return (
+    <div style={{ backgroundColor: tipBackgrounColor }}>
+      { type === 'diyKeyWord' && <div>
+        <div>DIY关键字：自己设置的关键字用于在uTools主输入框输入，快速打开当前插件</div>
+        <div>点击添加按钮后, 双击下方列表进行编辑</div>
+      </div> }
+      { type === 'targetKetWord' && <div>
+        <div>
+          <div>目标关键字：DIY关键字对应的当前所选插件的关键字</div>
+          <div>击添加按钮后, 双击下方列表进行选择</div>
+        </div>
+      </div> }
     </div>
   )
 }
@@ -119,11 +137,17 @@ function ConfigureContent(props) {
     <Card className="card_content" title={ renderTitle(props.currentEditPlugins) }>
       <div className="list_title_warp">
         <div className="diy_keyWord_title">
-          DIY关键字
+          DIY关键字&nbsp;&nbsp;&nbsp;
+          <Tooltip title={ renderTip('diyKeyWord') }>
+            <QuestionCircleOutlined />
+          </Tooltip>
         </div>
         <div className="line"></div>
         <div className="target_keyWord_title">
-          目标插件关键字
+          目标插件关键字&nbsp;&nbsp;&nbsp;
+          <Tooltip title={ renderTip('targetKetWord') }>
+            <QuestionCircleOutlined />
+          </Tooltip>
         </div>
       </div>
       <div className="setting_list">
