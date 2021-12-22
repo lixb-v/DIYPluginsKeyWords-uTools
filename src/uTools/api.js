@@ -58,7 +58,7 @@ export function removeFeature(code) {
 /**
  * @description 获取key开头的数据
 */
-export function allDocs(key) {
+export function getAllDocs(key) {
   return utools.db.allDocs(key)
 }
 

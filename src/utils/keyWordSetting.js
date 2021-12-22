@@ -1,6 +1,6 @@
 // diy插件关键字工具函数文件
-import { getStorgeByID } from '@/utils/uTools'
-import { diyStoreKey } from '@/const'
+import { getStorgeByID } from '@/uTools/api'
+import { diyStoreKey, splitSymbol } from '@/const'
 import { isObject } from '@/utils/index'
 /**
  * @description 处理插件的features列表
@@ -28,14 +28,14 @@ export function disposeFeatures(features) {
 */
 export function getPluginsId(code) {
   if(!code || typeof code !== 'string') return
-  return code.split('_')[0]
+  return code.split('_')[1]
 }
 
 /**
  * @description 根据插件id获取当前本地存储的数据
 */
 export function getStoreDataById(id) {
-  const _id = diyStoreKey + '_' + id
+  const _id = diyStoreKey + splitSymbol + id
   const storeData = getStorgeByID(_id)
   return storeData
 }
@@ -84,7 +84,7 @@ export function filterNoSetting(alreadySettingList, notSettingList) {
 export function filterFetureById(featureList, id) {
   if(Array.isArray(featureList)) {
     return featureList.filter(feature => {
-      return feature.code.split('_')[0] === id
+      return feature.code.split(splitSymbol)[0] === id
     })
   } else {
     return []
@@ -99,11 +99,30 @@ export function filterFetureById(featureList, id) {
 */
 export function generateFeatureParams(pluinsData, diyData) {
   return {
-    code: pluinsData.name + '_' + diyData.diyKeyWord, // 当前插件name + diy关键字
+    code: generateFeatureCode(pluinsData, diyData),
     explain: `前往插件：${pluinsData.pluginName}, 目标关键字：${diyData.targetKeyWord}`,
     icon: pluinsData.logoPath,
     cmds: [diyData.diyKeyWord]
   }
+}
+
+/**
+ * @description 根据插件信息生成插件存储id
+ * @param {Object} 插件信息
+ * @return {Staring} 插件id
+*/
+export function generatePluinsId(pluinsData) {
+  return diyStoreKey + splitSymbol + pluinsData.name
+}
+
+/**
+ * @description 根据插件信息生成插件feature的
+ * @param {Object} 插件信息
+ * @param {Object} 当前正在diy的值
+ * @return {Staring} feature code
+*/
+export function generateFeatureCode(pluinsData, diyData) {
+  return diyStoreKey + splitSymbol + pluinsData.name + splitSymbol + diyData.diyKeyWord // 当前插件name + diy关键字
 }
 
 /**

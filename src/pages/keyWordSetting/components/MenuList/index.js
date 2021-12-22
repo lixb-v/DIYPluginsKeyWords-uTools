@@ -1,9 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 import { RootContext } from '@/reducer/rootContext'
-import { allDocs } from '@/utils/uTools'
-import { filterNoSetting } from '@/utils/keyWordSetting'
-import { Menu, Tag } from 'antd'
-import { diyStoreKey } from '@/const'
+import { Menu } from 'antd'
 import {
   StarOutlined,
   SettingOutlined

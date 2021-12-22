@@ -1,0 +1,14 @@
+.page {
+  overflow: hidden;
+  .add_bon_warp {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .table_warp {
+    margin-top: 10px;
+  }
+  .tableHintText {
+    color: #666;
+    font-size: 10px;
+  }
+}

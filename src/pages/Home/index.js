@@ -10,13 +10,11 @@ function Home(props) {
     tab: 'diy关键字',
     key: 'keyWordSetting',
     path: '/home/keyWordSetting'
+  }, {
+    tab: '快捷打开',
+    key: 'openLocal',
+    path: '/home/openLocal'
   }])
-
-  // , {
-  //   tab: '快捷打开设置',
-  //   key: 'openLocal',
-  //   path: '/home/openLocal'
-  // }
   const tabChange = (key) => {
     setTabKey(key)
     const findItem = tabList.find(tabItem => tabItem.key === key)

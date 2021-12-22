@@ -3,9 +3,9 @@ import { Card, Button } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import './index.scss'
 import SingleSetting from './SingleSetting'
-import { diyField, diyStoreKey } from '@/const'
-import { createStorage, upDataStorge, setFeature, removeFeature, getAllFeatures, removeStorgeById} from '@/utils/uTools'
-import { disposeFeatures, filterFetureById, generateFeatureParams } from '@/utils/keyWordSetting'
+import { diyField, diyStoreKey, splitSymbol } from '@/const'
+import { createStorage, upDataStorge, setFeature, removeFeature, getAllFeatures, removeStorgeById} from '@/uTools/api'
+import { disposeFeatures, filterFetureById, generateFeatureParams, generatePluinsId, generateFeatureCode } from '@/utils/keyWordSetting'
 const renderTitle = (PluginsInfo) => {
   return (
     <div className="plugins_setting_header">
@@ -81,7 +81,7 @@ function ConfigureContent(props) {
 
         // 把插件信息添加到本地存储
         const dbParams = {
-          _id: diyStoreKey + '_' + props.currentEditPlugins.name,
+          _id: generatePluinsId(props.currentEditPlugins),
           ...props.currentEditPlugins,
           diyList: diyKeyWordList
         }
@@ -105,12 +105,12 @@ function ConfigureContent(props) {
     }
     upDataStorge(upDataParams)
     // 删除feture
-    const deleteCode = props.currentEditPlugins.name + '_' + deleteItem[0].diyKeyWord
+    const deleteCode = generateFeatureCode(props.currentEditPlugins, deleteItem[0])
     removeFeature(deleteCode)
 
     // 如果diy列表为空了，则从本地数据库删除改插件记录
     if(diyKeyWordList.length === 0) {
-      const id = diyStoreKey + '_' + props.currentEditPlugins.name
+      const id = generatePluinsId(props.currentEditPlugins)
       removeStorgeById(id)
     }
   }
