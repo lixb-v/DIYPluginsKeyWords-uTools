@@ -105,3 +105,54 @@ export function generateFeatureParams(pluinsData, diyData) {
     cmds: [diyData.diyKeyWord]
   }
 }
+
+/**
+ * @description 插件去重
+ * @param {Array} 插件列表
+ * @return {Array} 去除后的插件列表
+*/
+export function removeRepeatPluins(pluinsList) {
+  let repeatIndexList = []
+  const indexObj = {}
+  pluinsList.forEach((item, index) => {
+    const id = item.name
+    if(!indexObj[id] && indexObj[id] !== 0) {
+      indexObj[id] = index
+    } else {
+      repeatIndexList.push([ indexObj[id], index ])
+    }
+  })
+  // 处理相同的插件进行对比版本号
+  if(repeatIndexList.length === 0) return pluinsList
+  let filterList = []
+  repeatIndexList.forEach(item => {
+    const [one, two] = item
+    const [pluinsInfo, pluinsIndex] = contrastVersion(pluinsList[one], pluinsList[two], one, two)
+    filterList.push(pluinsIndex)
+  })
+  return pluinsList.filter((item, index) => {
+    const findItem = filterList.find(filterItem => filterItem === index)
+    return !findItem
+  })
+}
+
+/**
+ * @description 对比版本号 返回版本毕竟小的一个，如果两个相同返回第第二个个
+ * @param {Object} plugins信息
+ * @param {object} plugins信息
+ * @param {Number} plugins1的下标
+ * @param {Number} plugins2的下标
+ * 
+*/
+export function contrastVersion(plugins1, plugins2, plugins1Index, plugins2Index) {
+  const versionArr1 = plugins1.version.split('.')
+  const versionArr2 = plugins2.version.split('.')
+  let contrastRes = null // 1 = plugins1小  2 = plugins2 小  空为平
+  versionArr1.forEach((item, index) => {
+    if(parseFloat(item) > versionArr2[index]) { contrastRes = 2 }
+    if(versionArr2[index] > parseFloat(item)) { contrastRes = 1 }
+    if(versionArr2[index] === parseFloat(item)) { contrastRes = null }
+  })
+  if( !contrastRes || contrastRes === 2 ) return [plugins2, plugins2Index]
+  if(contrastRes === 1) return [plugins1, plugins2Index]
+}

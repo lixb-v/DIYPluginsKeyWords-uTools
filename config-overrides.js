@@ -4,7 +4,11 @@ function resolve(dir) {
     return path.join(__dirname, '.', dir)
 }
 module.exports = override(
-    addWebpackAlias({
-        "@": path.resolve(__dirname, "src")
-    })
+    (config) => {
+        config.resolve.alias = {
+          "@": path.resolve(__dirname, "src"),
+        };
+        config.devtool = false; //去掉map文件
+        return config;
+    },
 )

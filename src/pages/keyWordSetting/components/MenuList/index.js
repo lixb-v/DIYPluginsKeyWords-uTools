@@ -26,19 +26,8 @@ function MenuList(props) {
   
   const {state, dispatch} = useContext(RootContext) // 获取全局的数据
 
-  // 获取已经设置的本地数据
-  utools.onPluginReady(() => {
-     const list = allDocs(diyStoreKey)
-     setAlreadySettingList(list)
-  })
-
-  useEffect(() => {
-    const resList = filterNoSetting(alreadySettingList, state.pluginsReduce.pluginsList)
-    // 根据已经获得的配置过的插件，进行过滤
-    setNotSettingList(resList)
-  }, [state.pluginsReduce.pluginsList])
   // 分类列表
-  const [ menuList, setMenuList ] = useState([{
+  const [ menuList ] = useState([{
     title: '已配置插件',
     key: 'alreadySetting',
     icon: <StarOutlined />
@@ -47,6 +36,11 @@ function MenuList(props) {
     key: 'notSetting',
     icon: <SettingOutlined />
   }])
+  useEffect(() => {
+    const { alreadyList, notSettingList } = state.pluginsReduce
+    setAlreadySettingList(alreadyList) 
+    setNotSettingList(notSettingList)
+  }, [state.pluginsReduce])
 
   const editorClick = (pluginInfo) => {
     props.setCurrentEditPlugins(pluginInfo)
@@ -61,14 +55,14 @@ function MenuList(props) {
     )
   }
   return (
-    <Menu  mode="inline" defaultOpenKeys={['alreadySetting']}>
+    <Menu  mode="inline" defaultOpenKeys={['alreadySetting', 'notSetting']}>
     { menuList.map(menuItem => (
       <SubMenu key={ menuItem.key } icon={ menuItem.icon } title={ subMenuTitleRender(menuItem) }>
         { menuItem.key === 'alreadySetting' && alreadySettingList.map(pluginItem => (
-          <Menu.Item style={ MenuTtemStyle() }  icon={ setPluginsIcon(pluginItem) }  onClick={ () => { editorClick(pluginItem) } } key={ pluginItem.name + 'ok'}>{ pluginItem.pluginName }</Menu.Item>
+          <Menu.Item style={ MenuTtemStyle() }  icon={ setPluginsIcon(pluginItem) }  onClick={ () => { editorClick(pluginItem) } } key={ 'alreadySetting' + pluginItem.name + pluginItem.pluginName }>{ pluginItem.pluginName }</Menu.Item>
         ))}
         { menuItem.key === 'notSetting' && notSettingList.map(pluginItem => (
-          <Menu.Item style={ MenuTtemStyle() } icon={ setPluginsIcon(pluginItem) } key={ pluginItem.name + 'no' } onClick={ () => { editorClick(pluginItem) } }>{ pluginItem.pluginName }</Menu.Item>
+          <Menu.Item style={ MenuTtemStyle() } icon={ setPluginsIcon(pluginItem) } key={ 'notSetting' + pluginItem.name + pluginItem.pluginName } onClick={ () => { editorClick(pluginItem) } }>{ pluginItem.pluginName }</Menu.Item>
         ))}
       </SubMenu>
     )) }

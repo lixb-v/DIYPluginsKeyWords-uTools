@@ -44,9 +44,9 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
-    ],
-    "homepage": "."
+    ]
   },
+  "homepage": ".",
   "devDependencies": {
     "customize-cra": "^1.0.0",
     "react-app-rewired": "^2.1.8"

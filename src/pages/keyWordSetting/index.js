@@ -10,6 +10,11 @@ const getHeight = () => {
 }
 function KeyWordSetting(props) {
   const [ currentEditPlugins, setCurrentEditPlugins ] = useState({})
+
+  // 用户退出插件
+  utools.onPluginOut(() => { 
+    setCurrentEditPlugins({})
+  })
   return (
    <Layout style={{ background: '#f3f4f6'  }}>
     <Sider

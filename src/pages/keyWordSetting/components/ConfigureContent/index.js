@@ -21,7 +21,7 @@ function ConfigureContent(props) {
   const [ diyKeyWordList, setDiyKeyWordList ] = useState([])
   const [ targetKeyWordList, setTargetKeyWordList ] = useState([])
   useEffect(() => {
-    console.log(props.currentEditPlugins, 'props.currentEditPlugins')
+    // console.log(props.currentEditPlugins, 'props.currentEditPlugins')
     setDiyKeyWordList([])
     setTargetKeyWordList([])
     if(props.currentEditPlugins.diyList && props.currentEditPlugins.diyList.length > 0) {

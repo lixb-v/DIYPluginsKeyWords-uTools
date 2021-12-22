@@ -2,25 +2,31 @@ import { useState } from 'react'
 import { Tabs, Card } from 'antd';
 import './index.scss'
 import keyWordSetting from '@/pages/keyWordSetting'
+import OpenLocal from '@/pages/OpenLocal'
 import { Route } from 'react-router-dom'
-import { tabHeight } from '@/const'
-const { TabPane } = Tabs;
-function Home() {
+function Home(props) {
+  const [tabKey, setTabKey] = useState('keyWordSetting')
   const [ tabList, setTabList ] = useState([{
-    tab: '关键字设置',
-    key: 'keyWordSetting'
+    tab: 'diy关键字',
+    key: 'keyWordSetting',
+    path: '/home/keyWordSetting'
   }])
-    return (
-      <Card style={{ width: '100%', margin: 'auto', height: '100vh', overflow: 'hidden' }} tabList={tabList} activeTabKey="keyWordSetting">
-        {/* <Tabs defaultActiveKey="keyWordSetting" style={{ height: tabHeight }}>
-          { tabList.map(tabItem => (
-             <TabPane tab={ tabItem.tab } key={ tabItem.key }>
-               { tabItem.route() }
-             </TabPane>
-          )) } 
-        </Tabs> */}
-        <Route path="/home/keyWordSetting" component={ keyWordSetting } />
-      </Card>
-    )
+
+  // , {
+  //   tab: '快捷打开设置',
+  //   key: 'openLocal',
+  //   path: '/home/openLocal'
+  // }
+  const tabChange = (key) => {
+    setTabKey(key)
+    const findItem = tabList.find(tabItem => tabItem.key === key)
+    props.history.push(findItem.path || tabList[0].path)
+  }
+  return (
+    <Card style={{ width: '100%', height: '100vh', overflow: 'hidden'}} tabList={tabList} activeTabKey={ tabKey } onTabChange={ tabChange }>
+      <Route path="/home/keyWordSetting" component={ keyWordSetting } />
+      <Route path="/home/openLocal" component={ OpenLocal } />
+    </Card>
+  )
   }
 export default Home

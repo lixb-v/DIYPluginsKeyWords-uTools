@@ -1,5 +1,7 @@
 export const pluginsInitState = {
-  pluginsList: []
+  pluginsList: [], // 所有插件
+  alreadyList: [], // 已经配置插件
+  notSettingList: [] // 未配置插件
 }
 
 export const pluginsReducer = (state, action) => {
@@ -8,6 +10,16 @@ export const pluginsReducer = (state, action) => {
       return {
         ...state,
         pluginsList: action.pluginsList
+      }
+    case 'setAlreadyList':
+      return {
+        ...state,
+        alreadyList: action.alreadyList
+      }
+    case 'setNotSettingList':
+      return {
+        ...state,
+        notSettingList: action.notSettingList
       }
     default:
       return {...state}
