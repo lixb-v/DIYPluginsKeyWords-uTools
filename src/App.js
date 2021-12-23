@@ -23,10 +23,9 @@ function App(props) {
       <div className="App">
         <Router>
           { refresh && <CacheSwitch>
-              <Route exact path="/">
+              {/* <Route exact path="/">
                 <Redirect to="/home/keyWordSetting" />
-                {/* <Redirect to="/demo" /> */}
-              </Route>
+              </Route> */}
               <CacheRoute path="/Home" component={ Home }></CacheRoute>
               <Route path="/demo" component={ Demo }></Route>
           </CacheSwitch>}
