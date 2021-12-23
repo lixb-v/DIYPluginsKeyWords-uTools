@@ -5,6 +5,9 @@ import { getPluginsId, getStoreDataById, getTargetKeyWOrdByPlugsData } from '@/u
 import { getStorgeByID } from '@/uTools/api'
 utools.onPluginEnter(({code, type, payload, optional}) => {
   console.log('用户打开插件:',code,type,payload, optional);
+  //每次进入需要设置一下窗口的高度 获取当前窗口的高度
+  const windowHeight = document.documentElement.clientHeight
+  utools.setExpendHeight(windowHeight)
   const codeList = code.split(splitSymbol)
   const codeKey = codeList[0]
   switch(codeKey) {
@@ -48,7 +51,4 @@ utools.onPluginEnter(({code, type, payload, optional}) => {
     break
     default:
   }
-  //每次进入需要设置一下窗口的高度 获取当前窗口的高度
-  const windowHeight = document.documentElement.clientHeight
-  utools.setExpendHeight(windowHeight)
 })
