@@ -110,12 +110,8 @@ export function disposePlugins(PluginsInfo, filePath) {
 */
 export function getPluginsDataList(uToolsPath) {
   return new Promise((resole, reject) => {
-    console.time('获取所有插件路径')
     getPluginsPathList(uToolsPath).then((pluginsPathList) => {
-      console.timeEnd('获取所有插件路径')
-      console.time('获取所有插件信息')
       readFileContent(pluginsPathList).then(pluginsInfoList => {
-        console.timeEnd('获取所有插件信息')
         resole(pluginsInfoList)
       })
     })

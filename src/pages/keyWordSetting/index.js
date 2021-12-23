@@ -4,13 +4,18 @@ import './index.scss'
 import MenuList from './components/MenuList'
 import ConfigureContent from './components/ConfigureContent'
 import { RootContext } from '@/reducer/rootContext'
-import { getContentHeight } from '@/utils/index'
+import { getContentHeight, getPluginsPath } from '@/utils/index'
+import { getAllDocs } from '@/uTools/api'
+import { getPluginsDataList } from '@/utils/readFile'
+import { filterNoSetting, removeRepeatPluins } from '@/utils/keyWordSetting'
+import { diyStoreKey } from '@/const'
+
 const { Content, Sider } = Layout;
 const { Search } = Input;
 const searchHeight = 50
 function KeyWordSetting(props) {
   const [ currentEditPlugins, setCurrentEditPlugins ] = useState({})
-  const {state, dispatch} = useContext(RootContext) // 获取全局的数据
+  const { state, dispatch } = useContext(RootContext) // 获取全局的数据
   const [ searchList, setSearchList ] = useState([])
   const [ isSearch, setIsSearch ] = useState(false)
   // 已配置插件
@@ -18,14 +23,14 @@ function KeyWordSetting(props) {
   // 未配置插件
   const [ notSettingList, setNotSettingList ] = useState([])
 
-
   useEffect(() => {
-    const { alreadyList, notSettingList } = state.pluginsReduce
-    setAlreadySettingList(alreadyList) 
-    setNotSettingList(notSettingList)
-  }, [state.pluginsReduce])
+    console.log('进入diy页面')
+    initData()
+  }, [])
+ 
   // 用户退出插件
-  utools.onPluginOut(() => { 
+  utools.onPluginOut(() => {
+    initData()
     setCurrentEditPlugins({})
   })
 
@@ -39,6 +44,23 @@ function KeyWordSetting(props) {
     const filterList = pluinsList.filter(pluinsItem => pluinsItem.pluginName.indexOf(value) !== -1)
     setIsSearch(true)
     setSearchList(filterList)
+  }
+
+  // 初始化数据
+  const initData = () => {
+    // 获取已配置列表
+    const alreadyList = getAllDocs(diyStoreKey)
+    setAlreadySettingList(alreadyList)
+    dispatch({ type: 'setAlreadyList', alreadyList: alreadyList })
+    const uToolsPath = getPluginsPath()
+    getPluginsDataList(uToolsPath).then(pluginsDataList => {
+      pluginsDataList = [...pluginsDataList, pluginsDataList[0], pluginsDataList[2]]
+      const removerList = removeRepeatPluins(pluginsDataList)
+      dispatch({ type: 'setPluginsList', pluginsList: removerList })
+      const resList = filterNoSetting(alreadyList, removerList)
+      dispatch({ type: 'setNotSettingList', notSettingList: resList })
+      setNotSettingList(resList)
+    }) 
   }
   return (
    <Layout style={{ background: '#f3f4f6'  }}>

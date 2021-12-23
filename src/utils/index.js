@@ -99,3 +99,14 @@ export function isHttp(path) {
 export function getContentHeight() {
   return `calc(100vh - ${tabHeight}px)`
 }
+
+/**
+ * @description 更改窗口的地址栏后面的路由
+*/
+export function changeWindowHref(routePath) {
+  const windowhref = window.location.href
+  const markIndex = windowhref.indexOf('#')
+  if(markIndex === -1) return
+  const spliceHref = windowhref.slice(0, markIndex + 1)
+  window.location.href = spliceHref + routePath
+}

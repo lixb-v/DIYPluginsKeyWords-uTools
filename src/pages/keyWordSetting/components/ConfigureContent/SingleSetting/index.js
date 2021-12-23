@@ -21,6 +21,11 @@ function SingleSetting(props) {
   useEffect(() => {
     setDiyFeedInData(props.diyData)
   }, [props.diyData])
+
+  useEffect(() => {
+    if(!props.diyData.diyKeyWord) return diyKeyWordDocuble()
+    if(!props.diyData.targetKeyWord) targetKeyWordDocuble()
+  }, [])
   // diy关键字
 
   // diy关键字双击事件
