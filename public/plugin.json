@@ -11,7 +11,7 @@
 		{
 		  "code": "open",
 		  "explain": "快捷打开本地资源",
-			"cmds":["open", "loacl", "openloacl"]
+			"cmds":["open", "local", "openloacl"]
 		}
 	],
   "development": {
