@@ -2,6 +2,7 @@
 	"main": "index.html",
 	"logo": "logo.png",
 	"preload":"preload.js",
+	"platform": ["win32"],
 	"features": [
 		{
 		  "code": "configure",
