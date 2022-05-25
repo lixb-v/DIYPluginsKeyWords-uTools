@@ -94,9 +94,9 @@ export function disposePlugins(PluginsInfo, filePath) {
   if(pluginFile) {
 　 　　// 读取文件内容
      const contentStr = fs.readFileSync(pluginFile, 'utf-8');
-     pluginFileContent = {...JSON.parse(contentStr)}  
+     pluginFileContent = {...JSON.parse(contentStr)}
     //  获取logo
-     const logoPath =  filePath + '\\' +pluginFileContent.logo
+     const logoPath =  filePath + '/' + pluginFileContent.logo
      pluginFileContent.logoPath = logoPath
   }
   return pluginFileContent
@@ -116,4 +116,23 @@ export function getPluginsDataList(uToolsPath) {
       })
     })
   })
+}
+
+
+/**
+ * @description 读取图片
+ * 
+*/
+export function readImgToBase64(filePath) {
+  let res = ''
+  try {
+    const fileType = filePath.split('.')[1] || 'png'
+    const imageData = fs.readFileSync(filePath);
+    var imageBase64 = imageData.toString("base64");
+    var imagePrefix = `data:image/${fileType};base64,`;
+    res = imagePrefix + imageBase64
+  } catch(error) {
+    console.log(error, 'err');
+  }
+  return res
 }

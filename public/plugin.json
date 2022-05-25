@@ -2,7 +2,7 @@
 	"main": "index.html",
 	"logo": "logo.png",
 	"preload":"preload.js",
-	"platform": ["win32"],
+	"platform": ["win32", "darwin"],
 	"features": [
 		{
 		  "code": "configure",
