@@ -4,12 +4,14 @@ import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons'
 import './index.scss'
 import SingleSetting from './SingleSetting'
 import { diyField, diyStoreKey, splitSymbol } from '@/const'
+import { readImgToBase64 } from '@/utils/readFile'
+
 import { createStorage, upDataStorge, setFeature, removeFeature, getAllFeatures, removeStorgeById} from '@/uTools/api'
 import { disposeFeatures, filterFetureById, generateFeatureParams, generatePluinsId, generateFeatureCode } from '@/utils/keyWordSetting'
 const renderTitle = (PluginsInfo) => {
   return (
     <div className="plugins_setting_header">
-      <img className="logo" src={ PluginsInfo.logoPath} alt=""/>
+      <img className="logo" src={ readImgToBase64(PluginsInfo.logoPath)} alt=""/>
       <div className="info">
         <div className="pluginName">{ PluginsInfo.pluginName }</div>
         <div className="author"><span className="info_title">开发者: </span>{PluginsInfo.author}</div>

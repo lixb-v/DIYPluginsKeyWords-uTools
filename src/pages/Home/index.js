@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Card } from 'antd';
 import './index.scss'
 import CacheRoute, { CacheSwitch } from 'react-router-cache-route'
-import keyWordSetting from '@/pages/KeyWordSetting'
+import keyWordSetting from '@/pages/keyWordSetting'
 import OpenLocal from '@/pages/OpenLocal'
 function Home(props) {
   const [ tabKey, setTabKey ] = useState('')

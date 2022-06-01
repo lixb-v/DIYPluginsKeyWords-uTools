@@ -5,8 +5,9 @@ import { diyStoreKey, splitSymbol, tabHeight } from '@/const'
  * @description 获取用户的uTools下的plugins插件路径
 */
 export function  getPluginsPath() {
-  const appDataPath = getPathUTools('appData')
-  const uToolsPath = appDataPath + '\\uTools\\plugins'
+  const appDataPath = getPathUTools('userData')
+  const uToolsPath = appDataPath + '\/plugins'
+  console.log(uToolsPath, 'appDataPathappDataPath');
   return uToolsPath
 }
 

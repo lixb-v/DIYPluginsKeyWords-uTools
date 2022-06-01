@@ -204,7 +204,7 @@ const Home = () => {
   }
   return ( 
     <div className="page" style={{ height: getContentHeight(), paddingBottom: 32 }}>
-      <Card style={{ padding: 16,  margin: 'auto' }} title="资源列表">
+      <Card style={{ padding: 16,  margin: 'auto' }}>
         <div className="add_bon_warp">
           <Button type="primary" onClick={ add }>添加</Button>
         </div> 

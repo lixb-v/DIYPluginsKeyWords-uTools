@@ -10,6 +10,7 @@ utools.onPluginEnter(({code, type, payload, optional}) => {
   utools.setExpendHeight(windowHeight)
   const codeList = code.split(splitSymbol)
   const codeKey = codeList[0]
+  console.log(codeKey, 'codeKeycodeKey');
   switch(codeKey) {
     case 'configure':
     changeWindowHref('/home/keyWordSetting')
