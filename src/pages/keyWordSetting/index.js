@@ -6,7 +6,6 @@ import ConfigureContent from './components/ConfigureContent'
 import { RootContext } from '@/reducer/rootContext'
 import { getContentHeight, getPluginsPath } from '@/utils/index'
 import { getAllDocs } from '@/uTools/api'
-import { getPluginsDataList } from '@/utils/readFile'
 import { filterNoSetting, removeRepeatPluins } from '@/utils/keyWordSetting'
 import { diyStoreKey } from '@/const'
 
@@ -25,15 +24,16 @@ function KeyWordSetting(props) {
   const [ notSettingList, setNotSettingList ] = useState([])
 
   useEffect(() => {
-    console.log('进入diy页面')
     initData()
   }, [])
  
-  // 用户退出插件
-  utools.onPluginOut(() => {
-    initData()
-    setCurrentEditPlugins({})
-  })
+  // // 用户退出插件
+  useEffect(() => {
+    if(state.mainReducer.isWake) {
+      initData()
+      setCurrentEditPlugins({})
+    }
+  }, [state.mainReducer.isWake])
 
   const onSearch = (value) => {
     if(!value){
@@ -55,7 +55,7 @@ function KeyWordSetting(props) {
     dispatch({ type: 'setAlreadyList', alreadyList: alreadyList })
     const uToolsPath = getPluginsPath()
     setUToolsPath(uToolsPath)
-    getPluginsDataList(uToolsPath).then(pluginsDataList => {
+    window.getPluginsDataList(uToolsPath).then(pluginsDataList => {
       console.log(pluginsDataList, 'pluginsDataListpluginsDataList');
       pluginsDataList = [...pluginsDataList, pluginsDataList[0], pluginsDataList[2]]
       const removerList = removeRepeatPluins(pluginsDataList)

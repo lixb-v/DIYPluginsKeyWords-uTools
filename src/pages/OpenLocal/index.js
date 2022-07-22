@@ -1,11 +1,13 @@
 import './index.scss'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { Table, Button, Card, Tag, Popconfirm, message, Tooltip, Switch } from 'antd'
 import { EditFilled, DeleteFilled } from '@ant-design/icons';
 import TheModal from './components/TheModal/index'
-import { convertDate, generateId, getContentHeight } from '@/utils/index'
+import { convertDate, generateId, getContentHeight, locationSearchToObj } from '@/utils/index'
 import { openLoaclKey } from '@/const'
-import { getAllFileList, saveFileInfo, addFeature, deleteFileInfo, deleteFeature, updataFileInfo } from '@/uTools/openLoacl'
+import { getAllFileList, saveFileInfo, addFeature, deleteFileInfo, deleteFeature, updataFileInfo, getOpenLocalList, removeOpenLocalList } from '@/uTools/openLoacl'
+import { createFormDataByFileList } from './methods'
+import { RootContext } from '@/reducer/rootContext'
 const cellListRender = (list, key, tipKey) => {
   return (
     <>
@@ -21,11 +23,13 @@ const cellListRender = (list, key, tipKey) => {
     </>
   )
 }
-const Home = () => {
+const Home = (props) => {
   const [ modalVisible, setModalVisible ] = useState(false)
   const [ modalType, setModalType ] = useState(1)
   const [ editValue, setEditValue ] = useState({})
   const [fileList, setFileList] = useState([])
+  const [ fileShape, setFileShape ] = useState([])
+  const { state, dispatch } = useContext(RootContext) // 获取全局的数据
   const columns = [
     {
       title: '是否启用',
@@ -80,12 +84,13 @@ const Home = () => {
         )
       }
     },
-     {
-      title: '创建时间',
-      dataIndex: 'createTime',
-      key: 'createTime',
-      align: 'center'
-    }, {
+    //  {
+    //   title: '创建时间',
+    //   dataIndex: 'createTime',
+    //   key: 'createTime',
+    //   align: 'center'
+    // }, 
+    {
       title: '操作',
       key: 'action',
       align: 'center',
@@ -113,12 +118,32 @@ const Home = () => {
     initFileList()
   }, []);
 
+  const setOpenLocalFiles = state.openLocalReducer.setOpenLocalFiles
+  useEffect(() => {
+    if(!state.mainReducer.isWake) return;
+    if(setOpenLocalFiles && setOpenLocalFiles.length > 0) {
+      initFileInto(setOpenLocalFiles);
+    }
+  }, [state.mainReducer.isWake])
   const initFileList = () => {
     const list = getAllFileList(openLoaclKey)
     setFileList(list)
   }
+  
+  // 初始化以文件形式进入
+  const initFileInto = (fileList) => {
+    if(!fileList || fileList.length === 0) return
+    const list = createFormDataByFileList(fileList)
+    setFileShape(list)
+    setModalType(3)
+    setModalVisible(true)
+  }
+
+
+
   // 编辑
   const editor = (value) => {
+    console.log(value, 'value');
     setEditValue(value)
     setModalType(2)
     setModalVisible(true)
@@ -216,6 +241,7 @@ const Home = () => {
         editValue = { editValue }
         modalVisible={modalVisible}
         modalType={ modalType }
+        fileShape={ fileShape }
         addList={ addList }
         setModalVisibleProp= { setModalVisibleProp }
         editSingleValue = {editSingleValue}

@@ -3,6 +3,7 @@ import { syncOpenFile, asynchronousOpenFile, changeWindowHref } from '@/utils/in
 import { isObject } from '@/utils/index'
 import { getPluginsId, getStoreDataById, getTargetKeyWOrdByPlugsData } from '@/utils/keyWordSetting'
 import { getStorgeByID } from '@/uTools/api'
+import { saveOpenLocalList } from './openLoacl'
 utools.onPluginEnter(({code, type, payload, optional}) => {
   console.log('用户打开插件:',code,type,payload, optional);
   //每次进入需要设置一下窗口的高度 获取当前窗口的高度
@@ -13,10 +14,15 @@ utools.onPluginEnter(({code, type, payload, optional}) => {
   console.log(codeKey, 'codeKeycodeKey');
   switch(codeKey) {
     case 'configure':
-    changeWindowHref('/home/keyWordSetting')
+      changeWindowHref('/home/keyWordSetting')
     break
     case 'open':
-    changeWindowHref('/home/openLocal')
+      let path = '/home/openLocal'
+      if(type === 'files' && Array.isArray(payload)) {
+        saveOpenLocalList(payload)
+        path += '?files=true'
+      }
+      changeWindowHref(path)
     break
     case diyStoreKey:
       // 获取插件id 
@@ -39,9 +45,9 @@ utools.onPluginEnter(({code, type, payload, optional}) => {
     break
     case openLoaclKey:
       // console.log('进入打开本地资源脚本执行:',code,type,payload, optional);
-      const doc = getStorgeByID(code);
       utools.hideMainWindow();
       utools.outPlugin();
+      const doc = getStorgeByID(code);
       if(doc.isSync) {
         // 同步
         syncOpenFile(doc.fileList)

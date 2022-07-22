@@ -4,7 +4,7 @@ import 'antd/dist/antd.css'
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import '@/uTools/index'
+// import '@/uTools/index' 
 ReactDOM.render(
   <App />,
   document.getElementById('root')

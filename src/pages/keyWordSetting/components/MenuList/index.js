@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Menu } from 'antd'
-import { readImgToBase64 } from '@/utils/readFile'
 import {
   StarOutlined,
   SettingOutlined,
@@ -9,7 +8,7 @@ import {
 
 const setPluginsIcon = (plugins) => {
   return (
-    <img style={{ width: 30, height: 30, borderRadius: '50%' }} src={readImgToBase64(plugins.logoPath)} alt="" />
+    <img style={{ width: 30, height: 30, borderRadius: '50%' }} src={window.readImgToBase64(plugins.logoPath)} alt="" />
   )
 }
 

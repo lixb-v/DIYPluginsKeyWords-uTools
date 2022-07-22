@@ -1,4 +1,6 @@
 
+import { SAVEOPENLOCALLISTKEY } from '@/const'
+
 // 获取所有数据
 export function getAllFileList(idKey) {
   let allDocs = utools.db.allDocs(idKey || '')
@@ -37,4 +39,21 @@ export function deleteFeature(id) {
 // 更新fileInfo
 export function updataFileInfo(fileInfo) {
   utools.db.bulkDocs([fileInfo])
+}
+
+// 以文件形式打开openLocal功能时，存储文件
+export function saveOpenLocalList(list) {
+  if(!list || list.length <= 0) return
+  utools.dbStorage.setItem(SAVEOPENLOCALLISTKEY, list)
+}
+
+// 获取以文件形式打开openLocal时，存储的文件
+export function getOpenLocalList() {
+  const list = utools.dbStorage.getItem(SAVEOPENLOCALLISTKEY)
+  return Array.isArray(list) ? list : []
+}
+
+// 清楚以文件形式打开openLocal时，存储的文件
+export function removeOpenLocalList() {
+  utools.dbStorage.removeItem(SAVEOPENLOCALLISTKEY)
 }

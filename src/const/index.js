@@ -14,3 +14,6 @@ export const diyField = {
   diyKeyWord: '',
   targetKeyWord: ''
 }
+
+// 以文件形式打开openLocal功能时，存储文件的key
+export const SAVEOPENLOCALLISTKEY = 'saveOpenLocalListKey'

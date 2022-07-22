@@ -1,10 +1,16 @@
 import { pluginsInitState, pluginsReducer } from './modules/pluginsReduce'
+import { openLocalReducer, openLocalInitState } from './modules/openLocalReduce'
+import { mainReducer, mainState } from './modules/mainReduce'
 export const rootInitState = {
-  pluginsReduce: pluginsInitState
+  mainReducer: mainState,
+  pluginsReduce: pluginsInitState,
+  openLocalReducer: openLocalInitState,
 }
 
 export const rootReduce = (state, action)=>{
   return {
-    pluginsReduce: pluginsReducer(state.pluginsReduce, action)
+    mainReducer: mainReducer(state.mainReducer, action),
+    pluginsReduce: pluginsReducer(state.pluginsReduce, action),
+    openLocalReducer: openLocalReducer(state.openLocalReducer, action),
   }
 }
