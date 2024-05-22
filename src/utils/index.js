@@ -1,12 +1,13 @@
 import { getPathUTools } from '@/uTools/api'
-import { diyStoreKey, splitSymbol, tabHeight } from '@/const'
+import { splitSymbol, tabHeight } from '@/const'
 
 /**
  * @description 获取用户的uTools下的plugins插件路径
 */
 export function  getPluginsPath() {
-  const appDataPath = getPathUTools('appData')
-  const uToolsPath = appDataPath + '\\uTools\\plugins'
+  const appDataPath = getPathUTools('userData')
+  const uToolsPath = appDataPath + '\/plugins'
+  console.log(uToolsPath, 'appDataPathappDataPath');
   return uToolsPath
 }
 
@@ -50,10 +51,9 @@ export function syncOpenFile(fileList) {
   const perform = (list, index) => {
     if(index === list.length) return
     list[index]().then(res => {
+      console.log(index, 'index');
       index++
-      setTimeout(() => {
-        perform(list, index)
-      }, 50);
+      perform(list, index)
     })
   }
   perform(openList, 0)
@@ -109,4 +109,25 @@ export function changeWindowHref(routePath) {
   if(markIndex === -1) return
   const spliceHref = windowhref.slice(0, markIndex + 1)
   window.location.href = spliceHref + routePath
+}
+
+/**
+ * @description 把url后的参数转换为对象
+ * @param{String} search
+ * @return {Object}
+ * 
+*/
+export function locationSearchToObj(search) {
+  if(!search) return {}
+  // 去除问号
+  if(search[0] == '?') {
+    search = search.replace('?', '')
+  }
+  const arr = search.split('&')
+  const resObj = {}
+  arr.forEach(item => {
+    const itemArr = item.split('=')
+    resObj[itemArr[0]] = itemArr[1]
+  })
+  return resObj
 }

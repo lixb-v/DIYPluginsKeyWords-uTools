@@ -8,7 +8,7 @@ import {
 
 const setPluginsIcon = (plugins) => {
   return (
-    <img style={{ width: 30, height: 30, borderRadius: '50%' }} src={plugins.logoPath} alt={ plugins.pluginName }/>
+    <img style={{ width: 30, height: 30, borderRadius: '50%' }} src={window.readImgToBase64(plugins.logoPath)} alt="" />
   )
 }
 

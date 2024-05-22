@@ -1,5 +1,5 @@
-const { fs, path } = window.getToolPlug()
-
+var fs = require('fs');
+var path = require('path');//解析需要遍历的文件夹
 
 /**
  * @description 获取一个文件下的文件的绝对路径
@@ -7,7 +7,7 @@ const { fs, path } = window.getToolPlug()
  * @return {Array} 文件下所有文件绝对路径的集合
  * 
 */
-export function readFileInsidePath(filePath) {
+window.readFileInsidePath = function(filePath) {
   return new Promise((resole, reject) => {
     const resolveFilePath = path.resolve(filePath)
 
@@ -30,7 +30,7 @@ export function readFileInsidePath(filePath) {
  * @return {Object} 文件的 Stats 对象
  * 
 */
-export function readFileStatsByPath(filePath) {
+window.readFileStatsByPath = function(filePath) {
   return new Promise((resole, reject) => {
      //根据文件路径获取文件信息，返回一个fs.Stats对象
      fs.stat(filePath,function(eror, stats){
@@ -46,7 +46,7 @@ export function readFileStatsByPath(filePath) {
  * @description 获取uTools应用数据下plugins文件下以asar结尾的插件的路径集合
  * @param 文件绝对路径
 */
-export function getPluginsPathList(filePath) {
+window.getPluginsPathList = function(filePath) {
   return new Promise((resole, reject) => {
     // 读取文件下所有文件的路径
     readFileInsidePath(filePath).then(filePathList => {
@@ -67,7 +67,7 @@ export function getPluginsPathList(filePath) {
  * @return {Array} 文件的所有内容集合
 */
 
-export function readFileContent(filePathList) {  
+window.readFileContent = function(filePathList) {  
   return new Promise((resole, reject) => {
     const contentList = filePathList.map(async (filePath) => {
       // 读取当前插件下的所有文件
@@ -85,7 +85,7 @@ export function readFileContent(filePathList) {
  * @param {String} 插件路径
  * @return {Object} 插件信息
 */
-export function disposePlugins(PluginsInfo, filePath) {
+window.disposePlugins = function(PluginsInfo, filePath) {
   // 找出需要的文件进行读取
 
   // 找到plugin文件
@@ -94,9 +94,9 @@ export function disposePlugins(PluginsInfo, filePath) {
   if(pluginFile) {
 　 　　// 读取文件内容
      const contentStr = fs.readFileSync(pluginFile, 'utf-8');
-     pluginFileContent = {...JSON.parse(contentStr)}  
+     pluginFileContent = {...JSON.parse(contentStr)}
     //  获取logo
-     const logoPath =  filePath + '\\' +pluginFileContent.logo
+     const logoPath =  filePath + '/' + pluginFileContent.logo
      pluginFileContent.logoPath = logoPath
   }
   return pluginFileContent
@@ -108,7 +108,7 @@ export function disposePlugins(PluginsInfo, filePath) {
  * @return {Array} 插件内容集合
  * 
 */
-export function getPluginsDataList(uToolsPath) {
+window.getPluginsDataList = function(uToolsPath) {
   return new Promise((resole, reject) => {
     getPluginsPathList(uToolsPath).then((pluginsPathList) => {
       readFileContent(pluginsPathList).then(pluginsInfoList => {
@@ -116,4 +116,23 @@ export function getPluginsDataList(uToolsPath) {
       })
     })
   })
+}
+
+
+/**
+ * @description 读取图片
+ * 
+*/
+window.readImgToBase64 = function(filePath) {
+  let res = ''
+  try {
+    const fileType = filePath.split('.')[1] || 'png'
+    const imageData = fs.readFileSync(filePath);
+    var imageBase64 = imageData.toString("base64");
+    var imagePrefix = `data:image/${fileType};base64,`;
+    res = imagePrefix + imageBase64
+  } catch(error) {
+    // console.log(error, 'err');
+  }
+  return res
 }

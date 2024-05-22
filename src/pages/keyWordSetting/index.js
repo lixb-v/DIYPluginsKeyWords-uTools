@@ -6,7 +6,6 @@ import ConfigureContent from './components/ConfigureContent'
 import { RootContext } from '@/reducer/rootContext'
 import { getContentHeight, getPluginsPath } from '@/utils/index'
 import { getAllDocs } from '@/uTools/api'
-import { getPluginsDataList } from '@/utils/readFile'
 import { filterNoSetting, removeRepeatPluins } from '@/utils/keyWordSetting'
 import { diyStoreKey } from '@/const'
 
@@ -14,6 +13,7 @@ const { Content, Sider } = Layout;
 const { Search } = Input;
 const searchHeight = 50
 function KeyWordSetting(props) {
+  const [ uToolsPath, setUToolsPath ] = useState('')
   const [ currentEditPlugins, setCurrentEditPlugins ] = useState({})
   const { state, dispatch } = useContext(RootContext) // 获取全局的数据
   const [ searchList, setSearchList ] = useState([])
@@ -24,15 +24,16 @@ function KeyWordSetting(props) {
   const [ notSettingList, setNotSettingList ] = useState([])
 
   useEffect(() => {
-    console.log('进入diy页面')
     initData()
   }, [])
  
-  // 用户退出插件
-  utools.onPluginOut(() => {
-    initData()
-    setCurrentEditPlugins({})
-  })
+  // // 用户退出插件
+  useEffect(() => {
+    if(state.mainReducer.isWake) {
+      initData()
+      setCurrentEditPlugins({})
+    }
+  }, [state.mainReducer.isWake])
 
   const onSearch = (value) => {
     if(!value){
@@ -53,7 +54,9 @@ function KeyWordSetting(props) {
     setAlreadySettingList(alreadyList)
     dispatch({ type: 'setAlreadyList', alreadyList: alreadyList })
     const uToolsPath = getPluginsPath()
-    getPluginsDataList(uToolsPath).then(pluginsDataList => {
+    setUToolsPath(uToolsPath)
+    window.getPluginsDataList(uToolsPath).then(pluginsDataList => {
+      console.log(pluginsDataList, 'pluginsDataListpluginsDataList');
       pluginsDataList = [...pluginsDataList, pluginsDataList[0], pluginsDataList[2]]
       const removerList = removeRepeatPluins(pluginsDataList)
       dispatch({ type: 'setPluginsList', pluginsList: removerList })
@@ -82,7 +85,7 @@ function KeyWordSetting(props) {
           <Search placeholder="请输入插件名" onSearch={onSearch}  />
         </div>
         
-        <MenuList notSettingList={ notSettingList } alreadySettingList={ alreadySettingList } searchList={ searchList } isSearch={ isSearch } setCurrentEditPlugins={ (plugins) => { setCurrentEditPlugins(plugins) } }/>
+        <MenuList notSettingList={ notSettingList } alreadySettingList={ alreadySettingList } searchList={ searchList } isSearch={ isSearch } setCurrentEditPlugins={ (plugins) => { setCurrentEditPlugins(plugins) } } uToolsPath={uToolsPath}/>
       </div>
     </Sider>
     <Layout className="site-layout" style={{ marginLeft: 200, position: 'absolute', width: 'calc(100vw - 200px)' }}>

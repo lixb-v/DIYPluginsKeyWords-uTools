@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Modal, Form, Input, Button, Card, message, Switch } from 'antd';
+import { Modal, Form, Input, Button, Card, message, Switch, Row, Col } from 'antd';
 import { MinusCircleOutlined } from '@ant-design/icons';
-
+import UpLoadShowIcon from './UpLoadShowIcon'
 import Cordelle from './Cordelle'
 function TheModal(props) {
   const [form] = Form.useForm();
@@ -13,6 +13,8 @@ function TheModal(props) {
       if(props.modalType === 2 && props.editValue.KeyWord) {
         // 编辑
         echoFormValue(props.editValue)
+      } else if(props.modalType === 3) {
+        echoFormValue(props.fileShape)
       }
     } else { // 关闭
       onReset()
@@ -25,6 +27,7 @@ function TheModal(props) {
     .then(res => {
       switch (props.modalType) {
         case 1:
+        case 3:
           props.addList(res)
           .then(() => {
             message.success('录入成功');
@@ -69,7 +72,7 @@ function TheModal(props) {
     const fileName = file.name
     const formValue = form.getFieldsValue()
     formValue.fileList[index].filePath = filePath
-    // ,没值自动填入,有值则不填入
+    // 没值自动填入,有值则不填入
     if(!formValue.fileList[index].fileName) {
       formValue.fileList[index].fileName = fileName
     }
@@ -90,10 +93,10 @@ function TheModal(props) {
       <Form
         name="fileForm"
         form={form}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 15 }}
+        wrapperCol={{ span: 12 }}
         initialValues={{ remember: true }}
         autoComplete="off"
+        labelCol={ {span: 6, offset: 0} }
         ref={ formRef }
       >
       <Form.Item 
@@ -103,6 +106,13 @@ function TheModal(props) {
       >
         <Input placeholder="请输入关键字，用于打开资源"/>
       </Form.Item>
+      {/* <Form.Item
+        label="图标"
+        valuePropName="showIcon"
+        name="showIcon"
+      >
+        <UpLoadShowIcon />
+      </Form.Item> */}
       <Form.Item
         label="是否同步打开资源"
         valuePropName="checked"

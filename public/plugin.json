@@ -2,7 +2,7 @@
 	"main": "index.html",
 	"logo": "logo.png",
 	"preload":"preload.js",
-	"platform": ["win32"],
+	"platform": ["win32", "darwin"],
 	"features": [
 		{
 		  "code": "configure",
@@ -12,7 +12,11 @@
 		{
 		  "code": "open",
 		  "explain": "快捷打开本地资源",
-			"cmds":["open", "local", "openloacl"]
+			"cmds":["open", "local", "openloacl", {
+				"type": "files",
+				"label": "添加快捷打开资源",
+				"minLength": 1
+			}]
 		}
 	],
   "development": {
